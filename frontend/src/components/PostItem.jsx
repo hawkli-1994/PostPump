@@ -39,7 +39,7 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
         )}
       </div>
       
-      {account && post.ownerAddress !== account && (
+      {account && (
         <div className="post-actions">
           <button onClick={handleQuickInvest} className="quick-invest-button">
             +1 Point
