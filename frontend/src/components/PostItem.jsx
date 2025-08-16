@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const PostItem = ({ post, account, onInvest, onLaunch }) => {
   const [investAmount, setInvestAmount] = useState('');
   const [showInvestForm, setShowInvestForm] = useState(false);
+  const [showLaunchAnimation, setShowLaunchAnimation] = useState(false);
 
   const handleInvest = (e) => {
     e.preventDefault();
@@ -17,7 +18,22 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
     onInvest(post.id, 1);
   };
 
-  const canLaunchToken = post.ownerAddress === account && post.points >= 100 && !post.tokenAddress;
+  const handleLaunch = () => {
+    // 显示发射动画
+    setShowLaunchAnimation(true);
+    // 调用父组件的onLaunch方法
+    onLaunch(post.id);
+    // 3秒后隐藏动画
+    setTimeout(() => {
+      setShowLaunchAnimation(false);
+    }, 3000);
+  };
+
+  // 计算进度百分比 (基于5个积分的阈值)
+  const progressPercentage = Math.min(100, (post.points / 5) * 100);
+  
+  // 检查是否可以发射代币
+  const canLaunchToken = post.ownerAddress === account && post.points >= 5 && !post.tokenAddress;
 
   return (
     <div className="post-item">
@@ -37,6 +53,20 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
             Token: {post.tokenName} ({post.tokenSymbol}) - {post.tokenAddress.substring(0, 6)}...{post.tokenAddress.substring(post.tokenAddress.length - 4)}
           </span>
         )}
+      </div>
+      
+      {/* 进度条 */}
+      <div className="progress-container">
+        <div className="progress-bar">
+          <div 
+            className="progress-fill" 
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+          <span className="rocket-icon">🚀</span>
+        </div>
+        <div className="progress-text">
+          {post.points}/5 points to launch
+        </div>
       </div>
       
       {account && (
@@ -62,9 +92,19 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
         </div>
       )}
       
+      {/* 发射按钮和动画 */}
       {canLaunchToken && (
         <div className="token-actions">
-          <button onClick={() => onLaunch(post.id)}>Launch Token</button>
+          <button onClick={handleLaunch}>Launch Token</button>
+        </div>
+      )}
+      
+      {showLaunchAnimation && (
+        <div className="launch-animation">
+          <div className="rocket-launch">
+            <span className="rocket">🚀</span>
+          </div>
+          <div className="success-message">Token Launch Successful!</div>
         </div>
       )}
     </div>
