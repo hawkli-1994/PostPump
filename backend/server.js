@@ -190,7 +190,9 @@ app.post('/launch', (req, res) => {
     }
     
     // Check if post has enough points
-    if (post.points < 100) {
+    // if (post.points < 100) {
+    // for hackton 
+    if (post.points < 5) {
       return res.status(400).json({ error: 'Not enough points to launch token' });
     }
     
