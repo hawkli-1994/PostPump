@@ -4,6 +4,7 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
   const [investAmount, setInvestAmount] = useState('');
   const [showInvestForm, setShowInvestForm] = useState(false);
   const [showLaunchAnimation, setShowLaunchAnimation] = useState(false);
+  const [hasLaunched, setHasLaunched] = useState(false);
 
   const handleInvest = (e) => {
     e.preventDefault();
@@ -19,8 +20,21 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
   };
 
   const handleLaunch = () => {
+    // 如果已经发射过，则只显示动画
+    if (hasLaunched || post.tokenAddress) {
+      // 显示发射动画
+      setShowLaunchAnimation(true);
+      // 3秒后隐藏动画
+      setTimeout(() => {
+        setShowLaunchAnimation(false);
+      }, 3000);
+      return;
+    }
+    
     // 显示发射动画
     setShowLaunchAnimation(true);
+    // 设置已发射状态
+    setHasLaunched(true);
     // 调用父组件的onLaunch方法
     onLaunch(post.id);
     // 3秒后隐藏动画
@@ -32,8 +46,11 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
   // 计算进度百分比 (基于5个积分的阈值)
   const progressPercentage = Math.min(100, (post.points / 5) * 100);
   
-  // 检查是否可以发射代币
-  const canLaunchToken = post.ownerAddress === account && post.points >= 5 && !post.tokenAddress;
+  // 检查是否可以发射代币（为了演示，即使已发射也保持按钮可见）
+  const canLaunchToken = post.ownerAddress === account && post.points >= 5;
+  
+  // 检查是否已经发射过
+  const isTokenLaunched = post.tokenAddress || hasLaunched;
 
   return (
     <div className="post-item">
@@ -48,9 +65,13 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
       </div>
       <div className="post-stats">
         <span>Points: {post.points}</span>
-        {post.tokenAddress && (
+        {isTokenLaunched && (
           <span className="token-info">
-            Token: {post.tokenName} ({post.tokenSymbol}) - {post.tokenAddress.substring(0, 6)}...{post.tokenAddress.substring(post.tokenAddress.length - 4)}
+            {post.tokenAddress ? (
+              <>Token: {post.tokenName} ({post.tokenSymbol}) - {post.tokenAddress.substring(0, 6)}...{post.tokenAddress.substring(post.tokenAddress.length - 4)}</>
+            ) : (
+              <>Token: Launching...</>
+            )}
           </span>
         )}
       </div>
@@ -95,7 +116,9 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
       {/* 发射按钮和动画 */}
       {canLaunchToken && (
         <div className="token-actions">
-          <button onClick={handleLaunch}>Launch Token</button>
+          <button onClick={handleLaunch}>
+            {isTokenLaunched ? 'Token Launched!' : 'Launch Token'}
+          </button>
         </div>
       )}
       

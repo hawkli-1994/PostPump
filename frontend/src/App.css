@@ -12,30 +12,40 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #f5f0ff 0%, #e6e6ff 100%);
+  background-attachment: fixed;
+  color: #333;
 }
 
 .App {
   text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .App-header {
-  background-color: #282c34;
+  background: linear-gradient(90deg, #6B4AEF 0%, #8A6EFF 100%);
   padding: 20px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(107, 74, 239, 0.2);
+  margin-bottom: 30px;
 }
 
 .App-header h1 {
   margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .App-header button {
-  background-color: #61dafb;
-  border: none;
-  color: #282c34;
+  background-color: white;
+  border: 2px solid white;
+  color: #6B4AEF;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
@@ -43,7 +53,16 @@ body {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.App-header button:hover {
+  background-color: #f0f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 main {
@@ -52,38 +71,61 @@ main {
 
 .post-form {
   background: white;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(107, 74, 239, 0.15);
+  border: 1px solid #e6e6ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(107, 74, 239, 0.25);
 }
 
 .post-form input, .post-form textarea {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px;
+  margin: 12px 0;
+  border: 2px solid #e6e6ff;
+  border-radius: 8px;
   box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.post-form input:focus, .post-form textarea:focus {
+  border-color: #6B4AEF;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 74, 239, 0.2);
 }
 
 .post-form textarea {
-  height: 100px;
+  height: 120px;
   resize: vertical;
 }
 
 .post-form button {
-  background-color: #28a745;
+  background: linear-gradient(90deg, #6B4AEF 0%, #8A6EFF 100%);
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(107, 74, 239, 0.3);
+}
+
+.post-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(107, 74, 239, 0.4);
 }
 
 .posts-section {
@@ -93,20 +135,31 @@ main {
 .posts-section h2 {
   display: inline-block;
   margin-right: 20px;
+  color: #6B4AEF;
+  font-size: 1.8rem;
+  font-weight: 700;
 }
 
 .posts-section > button {
-  background-color: #007bff;
+  background: linear-gradient(90deg, #6B4AEF 0%, #8A6EFF 100%);
   border: none;
   color: white;
-  padding: 8px 16px;
+  padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(107, 74, 239, 0.3);
+}
+
+.posts-section > button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(107, 74, 239, 0.4);
 }
 
 .post-list {
@@ -115,118 +168,172 @@ main {
 
 .post-item {
   background: white;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(107, 74, 239, 0.15);
+  border: 1px solid #e6e6ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(107, 74, 239, 0.25);
 }
 
 .post-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .post-owner {
   font-weight: bold;
-  color: #007bff;
+  color: #6B4AEF;
+  background-color: #f0ebff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
 }
 
 .post-content p {
-  margin: 10px 0;
+  margin: 15px 0;
   font-size: 16px;
-  line-height: 1.4;
+  line-height: 1.6;
+  color: #444;
 }
 
 .post-stats {
   display: flex;
   justify-content: space-between;
-  margin: 15px 0;
-  padding: 10px 0;
+  margin: 20px 0;
+  padding: 15px 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+  font-weight: 600;
 }
 
 .token-info {
-  color: #28a745;
+  color: #6B4AEF;
   font-weight: bold;
+  background-color: #f0ebff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
 }
 
 .post-actions, .token-actions {
-  margin-top: 15px;
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .post-actions button, .token-actions button {
-  background-color: #ffc107;
+  background: linear-gradient(90deg, #6B4AEF 0%, #8A6EFF 100%);
   border: none;
-  color: #212529;
-  padding: 8px 16px;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(107, 74, 239, 0.3);
+}
+
+.post-actions button:hover, .token-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(107, 74, 239, 0.4);
 }
 
 .post-actions .quick-invest-button {
-  background-color: #28a745;
-  color: white;
+  background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.post-actions .quick-invest-button:hover {
+  box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
 }
 
 .invest-form {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  background: #f9f9ff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 
 .invest-form input {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 2px solid #e6e6ff;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 100px;
+  transition: border-color 0.3s ease;
+}
+
+.invest-form input:focus {
+  border-color: #6B4AEF;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 74, 239, 0.2);
 }
 
 .invest-form button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   font-size: 14px;
+  border-radius: 8px;
+  flex: none;
 }
 
 /* 进度条样式 */
 .progress-container {
-  margin: 15px 0;
+  margin: 20px 0;
+  padding: 10px 0;
 }
 
 .progress-bar {
   width: 100%;
-  height: 20px;
-  background-color: #e9ecef;
-  border-radius: 10px;
+  height: 24px;
+  background-color: #e9e6ff;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
-  border-radius: 10px;
+  background: linear-gradient(90deg, #6B4AEF 0%, #8A6EFF 100%);
+  border-radius: 12px;
   transition: width 0.5s ease-in-out;
+  box-shadow: inset 0 0 10px rgba(107, 74, 239, 0.5);
 }
 
 .rocket-icon {
   position: absolute;
-  right: 5px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 12px;
+  font-size: 14px;
   z-index: 2;
+  color: white;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
 }
 
 .progress-text {
   font-size: 14px;
-  color: #6c757d;
+  color: #6B4AEF;
+  font-weight: 600;
   text-align: right;
 }
 
@@ -237,7 +344,7 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background: linear-gradient(135deg, rgba(107, 74, 239, 0.9) 0%, rgba(138, 110, 255, 0.95) 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -261,9 +368,11 @@ main {
 
 .success-message {
   color: white;
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 700;
   margin-top: 50px;
   animation: messageFade 3s forwards;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 @keyframes messageFade {
@@ -275,5 +384,30 @@ main {
   }
   100% {
     opacity: 0;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .App-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .post-form, .post-item {
+    padding: 20px;
+  }
+  
+  .posts-section h2 {
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  .post-actions, .token-actions {
+    flex-direction: column;
+  }
+  
+  .post-actions button, .token-actions button {
+    width: 100%;
   }
 }
