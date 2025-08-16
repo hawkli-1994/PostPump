@@ -5,6 +5,9 @@ import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import useRewardPoints from './hooks/useRewardPoints';
 
+// 从环境变量获取API基础URL，如果没有设置则使用默认值
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function App() {
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
@@ -59,7 +62,7 @@ function App() {
     if (!account) return;
     
     try {
-      const response = await fetch(`http://localhost:3001/user/${account}`);
+      const response = await fetch(`${API_BASE_URL}/user/${account}`);
       if (response.ok) {
         const userData = await response.json();
         setUserPoints(userData.points);
@@ -72,7 +75,7 @@ function App() {
   // Fetch all posts
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:3001/posts');
+      const response = await fetch(`${API_BASE_URL}/posts`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {
@@ -102,7 +105,7 @@ function App() {
       
       // 然后调用后端API创建帖子记录
       console.log('Calling backend API to create post');
-      const response = await fetch('http://localhost:3001/post', {
+      const response = await fetch(`${API_BASE_URL}/post`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +147,7 @@ function App() {
       }
       
       // 然后调用后端API记录投资
-      const response = await fetch('http://localhost:3001/invest', {
+      const response = await fetch(`${API_BASE_URL}/invest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,7 +181,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/launch', {
+      const response = await fetch(`${API_BASE_URL}/launch`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
