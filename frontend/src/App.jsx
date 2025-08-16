@@ -241,16 +241,24 @@ function App() {
       </header>
 
       <main>
-        {account && <PostForm onCreatePost={createPost} />}
-        <div className="posts-section">
-          <h2>Posts</h2>
-          <button onClick={fetchPosts}>Refresh Posts</button>
-          <PostList 
-            posts={posts} 
-            account={account}
-            onInvest={investInPost}
-            onLaunch={launchToken}
-          />
+        <div className="content-wrapper">
+          {account && (
+            <div className="create-post-section">
+              <PostForm onCreatePost={createPost} />
+            </div>
+          )}
+          <div className="posts-section">
+            <div className="posts-header">
+              <h2>Posts</h2>
+              <button onClick={fetchPosts}>Refresh Posts</button>
+            </div>
+            <PostList 
+              posts={posts} 
+              account={account}
+              onInvest={investInPost}
+              onLaunch={launchToken}
+            />
+          </div>
         </div>
       </main>
     </div>

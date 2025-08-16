@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/rajdhani": "^5.2.6",
+    "@fontsource/share-tech-mono": "^5.2.6",
     "ethers": "^6.15.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
