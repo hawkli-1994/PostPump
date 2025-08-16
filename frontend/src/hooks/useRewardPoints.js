@@ -101,14 +101,20 @@ const useRewardPoints = (account, provider) => {
     if (account && provider) {
       try {
         console.log('Initializing contract with signer');
-        const rewardPointsContract = new ethers.Contract(
-          REWARD_POINTS_ADDRESS,
-          REWARD_POINTS_ABI,
-          provider.getSigner()
-        );
-        setContract(rewardPointsContract);
-        setInitError(null);
-        fetchUserPoints(rewardPointsContract);
+        // In ethers.js v6, we need to use the async getSigner() method
+        provider.getSigner().then((signer) => {
+          const rewardPointsContract = new ethers.Contract(
+            REWARD_POINTS_ADDRESS,
+            REWARD_POINTS_ABI,
+            signer
+          );
+          setContract(rewardPointsContract);
+          setInitError(null);
+          fetchUserPoints(rewardPointsContract);
+        }).catch((error) => {
+          console.error('Error getting signer:', error);
+          setInitError('获取签名者失败: ' + error.message);
+        });
       } catch (error) {
         console.error('Error initializing contract:', error);
         setInitError('合约初始化失败: ' + error.message);
@@ -139,7 +145,7 @@ const useRewardPoints = (account, provider) => {
     
     try {
       const points = await contractInstance.userPoints(account);
-      setUserPoints(ethers.utils.formatEther(points));
+      setUserPoints(ethers.formatEther(points));
     } catch (error) {
       console.error('Error fetching user points:', error);
     }
@@ -187,7 +193,7 @@ const useRewardPoints = (account, provider) => {
     try {
       const tx = await contract.investInPost(
         postId,
-        ethers.utils.parseEther(amount.toString())
+        ethers.parseEther(amount.toString())
       );
       await tx.wait();
       await fetchUserPoints(contract);
