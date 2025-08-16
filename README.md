@@ -2,6 +2,8 @@
 
 A simplified social posting platform inspired by X (Twitter), integrated with Web3 elements. Users post content to earn points, invest points in other posts to accumulate value, and when a post reaches a points threshold, the poster can launch an ERC20 token with AI-generated name and image based on the post's theme.
 
+![logo](./images/image.jpg)
+
 ## Project Structure
 
 ```
