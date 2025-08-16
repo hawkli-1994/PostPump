@@ -171,6 +171,11 @@ main {
   border-radius: 4px;
 }
 
+.post-actions .quick-invest-button {
+  background-color: #28a745;
+  color: white;
+}
+
 .invest-form {
   display: flex;
   gap: 10px;

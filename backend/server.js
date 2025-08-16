@@ -16,6 +16,13 @@ app.get('/', (req, res) => {
   res.json({ message: 'PostPump API' });
 });
 
+// Get user points
+app.get('/user/:address', (req, res) => {
+  const { address } = req.params;
+  const points = users[address] || 0;
+  res.json({ address, points });
+});
+
 // Create a new post
 app.post('/post', (req, res) => {
   const { ownerAddress, title, content } = req.body;

@@ -13,6 +13,10 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
     }
   };
 
+  const handleQuickInvest = () => {
+    onInvest(post.id, 1);
+  };
+
   const canLaunchToken = post.ownerAddress === account && post.points >= 100 && !post.tokenAddress;
 
   return (
@@ -37,6 +41,9 @@ const PostItem = ({ post, account, onInvest, onLaunch }) => {
       
       {account && post.ownerAddress !== account && (
         <div className="post-actions">
+          <button onClick={handleQuickInvest} className="quick-invest-button">
+            +1 Point
+          </button>
           {!showInvestForm ? (
             <button onClick={() => setShowInvestForm(true)}>Invest</button>
           ) : (

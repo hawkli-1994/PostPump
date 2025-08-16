@@ -6,7 +6,7 @@ import PostList from './components/PostList';
 function App() {
   const [account, setAccount] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState({});
+  const [userPoints, setUserPoints] = useState(0);
 
   // Connect to MetaMask
   const connectWallet = async () => {
@@ -21,6 +21,21 @@ function App() {
       }
     } else {
       alert('MetaMask is not installed!');
+    }
+  };
+
+  // Fetch user points
+  const fetchUserPoints = async () => {
+    if (!account) return;
+    
+    try {
+      const response = await fetch(`http://localhost:3001/user/${account}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUserPoints(userData.points);
+      }
+    } catch (error) {
+      console.error('Error fetching user points:', error);
     }
   };
 
@@ -57,6 +72,7 @@ function App() {
 
       if (response.ok) {
         fetchPosts();
+        fetchUserPoints(); // Update user points after creating a post
       } else {
         const error = await response.json();
         console.error('Error creating post:', error);
@@ -88,6 +104,7 @@ function App() {
 
       if (response.ok) {
         fetchPosts();
+        fetchUserPoints(); // Update user points after investing
       } else {
         const error = await response.json();
         console.error('Error investing:', error);
@@ -129,6 +146,15 @@ function App() {
     }
   };
 
+  // Fetch user points when account changes
+  useEffect(() => {
+    if (account) {
+      fetchUserPoints();
+    } else {
+      setUserPoints(0);
+    }
+  }, [account]);
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -140,6 +166,7 @@ function App() {
         {account ? (
           <div>
             <p>Connected: {account.substring(0, 6)}...{account.substring(account.length - 4)}</p>
+            <p>Points: {userPoints}</p>
             <button onClick={() => setAccount(null)}>Disconnect</button>
           </div>
         ) : (
