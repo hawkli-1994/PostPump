@@ -97,3 +97,13 @@ The ERC20 token contract is located in [backend/contracts/PostPumpToken.sol](bac
 - No real token deployment (simulated)
 - No real trading (simulated)
 - Data resets when backend restarts
+
+## Testnet deploy info
+krli@kerandeMacBook-Air PostPump % cd postpump && forge create --private-key 0x454bf83cd9500ce68b
+875c07bb7e210a4c20f904b3053425a4fa96f08e15e829 src/RewardPoints.sol:RewardPoints --rpc-url https:
+//testnet-rpc.monad.xyz --chain 10143 --broadcast
+[⠊] Compiling...
+No files changed, compilation skipped
+Deployer: 0x2dE5C1AC2568605C6Fc82173552ECfaf07883C65
+Deployed to: 0x6103342bbb34d045E345AAF520f0f7A6ecEa1f4e
+Transaction hash: 0x15e55a0430cd8bfbe09d2d9bf91df2c1307c460845f929050d9046702b3d13c2

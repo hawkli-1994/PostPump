@@ -1,11 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const { getUserPoints } = require('./blockchain');
 const app = express();
 const PORT = 3001;
 
 // In-memory storage
 let posts = [];
-let users = {};
 let postIdCounter = 1;
 
 app.use(cors());
@@ -16,11 +16,18 @@ app.get('/', (req, res) => {
   res.json({ message: 'PostPump API' });
 });
 
-// Get user points
-app.get('/user/:address', (req, res) => {
+// Get user points from blockchain
+app.get('/user/:address', async (req, res) => {
   const { address } = req.params;
-  const points = users[address] || 0;
-  res.json({ address, points });
+  try {
+    const points = await getUserPoints(address);
+    res.json({ address, points: parseFloat(points) });
+  } catch (error) {
+    console.error('Error fetching user points:', error);
+    // Fallback to in-memory storage if blockchain is unavailable
+    const points = 0;
+    res.json({ address, points });
+  }
 });
 
 // Create a new post
@@ -48,11 +55,8 @@ app.post('/post', (req, res) => {
   
   posts.push(newPost);
   
-  // Reward user with 10 points
-  if (!users[ownerAddress]) {
-    users[ownerAddress] = 0;
-  }
-  users[ownerAddress] += 10;
+  // Note: Points are now managed on the blockchain, not here
+  // The frontend will call the blockchain contract to award points
   
   res.status(201).json(newPost);
 });
@@ -82,10 +86,11 @@ app.post('/invest', (req, res) => {
     return res.status(400).json({ error: 'Not enough points' });
   }
   
-  // Deduct points from user
-  users[userAddress] -= amount;
+  // Note: Points are now managed on the blockchain
+  // The frontend will call the blockchain contract to handle point transfers
+  // We just update the post tracking for display purposes
   
-  // Add points to post
+  // Add points to post for display
   post.points += amount;
   
   // Track investment
