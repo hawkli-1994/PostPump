@@ -28,7 +28,8 @@ function App() {
 
   // Connect to MetaMask
   const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
+    // 更完善的检查机制，确保在各种环境下都能正确检测
+    if (typeof window !== 'undefined' && window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ 
           method: 'eth_requestAccounts' 
@@ -51,9 +52,17 @@ function App() {
         }
       } catch (error) {
         console.error('Error connecting wallet:', error);
+        alert('连接钱包时发生错误: ' + error.message);
       }
     } else {
-      alert('MetaMask is not installed!');
+      // 提供更详细的错误信息
+      if (typeof window === 'undefined') {
+        alert('当前环境不支持钱包连接');
+      } else if (!window.ethereum) {
+        alert('请安装MetaMask或其他兼容的钱包插件后再试！');
+      } else {
+        alert('未检测到可用的以太坊钱包');
+      }
     }
   };
 
@@ -139,37 +148,11 @@ function App() {
     }
 
     try {
-      // 首先调用区块链合约进行投资
-      const result = await rewardPoints.investInPost(postId, amount);
-      if (!result.success) {
-        alert('Failed to invest on blockchain: ' + result.error);
-        return;
-      }
-      
-      // 然后调用后端API记录投资
-      const response = await fetch(`${API_BASE_URL}/invest`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userAddress: account,
-          postId,
-          amount: parseInt(amount)
-        }),
-      });
-
-      if (response.ok) {
-        fetchPosts();
-        // 使用区块链积分系统获取积分
-        // 积分已经在investInPost中更新了
-      } else {
-        const error = await response.json();
-        console.error('Error investing:', error);
-        alert(`Error: ${error.error}`);
-      }
+      await rewardPoints.investInPost(postId, amount);
+      fetchPosts();
     } catch (error) {
-      console.error('Error investing:', error);
+      console.error('Error investing in post:', error);
+      alert('投资失败: ' + error.message);
     }
   };
 
@@ -181,26 +164,16 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/launch`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userAddress: account,
-          postId
-        }),
-      });
-
-      if (response.ok) {
+      const result = await rewardPoints.launchToken(postId);
+      if (result.success) {
+        alert('代币启动成功!');
         fetchPosts();
       } else {
-        const error = await response.json();
-        console.error('Error launching token:', error);
-        alert(`Error: ${error.error}`);
+        alert('代币启动失败: ' + result.error);
       }
     } catch (error) {
       console.error('Error launching token:', error);
+      alert('代币启动失败: ' + error.message);
     }
   };
 
@@ -231,15 +204,11 @@ function App() {
         <h1>PostPump</h1>
         {account ? (
           <div>
-            <p>Connected: {account.substring(0, 6)}...{account.substring(account.length - 4)}</p>
-            <p>Points: {userPoints}</p>
-            <button onClick={() => {
-              setAccount(null);
-              setProvider(null);
-            }}>Disconnect</button>
+            <p>已连接: {account.substring(0, 6)}...{account.substring(account.length - 4)}</p>
+            <p>积分: {rewardPoints.userPoints}</p>
           </div>
         ) : (
-          <button onClick={connectWallet}>Connect Wallet</button>
+          <button onClick={connectWallet}>连接钱包</button>
         )}
       </header>
 
